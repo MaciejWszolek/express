@@ -12,8 +12,11 @@ return
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  
-  res.render('admin/index', { title: 'admin' });
+  News.find({}, (err, data)=>{
+    console.log(data)
+    res.render('admin/index', { title: 'admin', data });
+  })
+ 
 });
 // Tworzenie formularza dodawania modulu
 router.get('/news/add',(req,res)=>{
@@ -32,10 +35,13 @@ console.log(errors)
         return
       }
       res.redirect('/admin')
-
     })
-
- 
   })
+
+  router.get('/news/del/:id',(req,res)=>{
+    News.findByIdAndDelete(req.params.id, (err)=>{
+      res.redirect('/admin')
+    })
+    })
 
 module.exports = router;
